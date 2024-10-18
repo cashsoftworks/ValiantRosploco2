@@ -7855,6 +7855,20 @@
             t = monaco.languages.CompletionItemKind.Variable;
             break;
         }
+        // Create the editor
+    const editor = monaco.editor.create(document.getElementById('container'), {});
+
+    // Function to send the current editor value to the parent window
+    function sendValueToParent() {
+        const value = editor.getValue(); // Get the current value of the editor
+        window.parent.postMessage(value, '*'); // Send the value to the parent window
+    }
+
+    // Listen for changes in the editor's content
+    editor.onDidChangeModelContent(() => {
+        sendValueToParent(); // Call the function whenever the content changes
+    });
+});
 
         monaco.languages.registerCompletionItemProvider("lua", {
           provideCompletionItems: function () {
